@@ -36,6 +36,7 @@ function getQuestions() {
             for(const q of questions) {
 
                 const qABlock = document.getElementById('content').appendChild(document.createElement('article'));  // question/answer block
+                qABlock.className = "qABlock";
                 const qDiv = qABlock.appendChild(document.createElement('h3')); // question
                 qDiv.textContent = q.question;
 
@@ -47,8 +48,13 @@ function getQuestions() {
                 }
 
                 const addAnswerBtn = qABlock.appendChild(document.createElement('input'));
+                addAnswerBtn.className = "addAnswerBtn";
                 addAnswerBtn.type = "button";
                 addAnswerBtn.value = "Add an Answer";
+                const answerBtns = document.getElementsByClassName("addAnswerBtn");
+                for(const a of answerBtns) {
+                    a.addEventListener('click', showAnswerModal);
+                }
 
             }
 
@@ -62,13 +68,46 @@ function getQuestions() {
     // setInterval - repeat call with specific interval
     // use setTimeout to avoid race conditions
 
-    //setTimeout(getQuestions, 500);
-
     req.send();
 }
 
+function showQuestionModal() {
+    const questionModal = document.getElementById("modal-question");
+    // questionModal.style.display = "block";
+    // console.log(questionModal.style.display);
+    // console.log(questionModal.classList);
+    questionModal.classList.add('open');
+}
+
+function showAnswerModal() {
+    const answerModal = document.getElementById("modal-answer");
+    answerModal.classList.add('open');
+}
+
+function hideModal() {
+    const modals = document.getElementsByClassName("modal");
+    for(const m of modals) {
+        // m.style.display = "none";
+        m.classList.remove('open');
+    }
+}
+
 function main() {
+
     getQuestions();
+
+    const askBtn = document.getElementById("btn-show-modal-question");
+    askBtn.addEventListener('click', showQuestionModal);
+    
+    // const answerBtns = document.getElementsByClassName("addAnswerBtn");
+    // for(const a of answerBtns) {
+    //     a.addEventListener('click', showAnswerModal);
+    // }
+
+    const cancelButtons = document.getElementsByClassName("close");
+    for(const c of cancelButtons) {
+        c.addEventListener('click', hideModal);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", main);
