@@ -13,6 +13,20 @@ app.post('/questions/', (req, res) => {
    // TODO
    // Create a new question document
    // Send back json (if new document created, send it back in json)
+
+   const qstn = new Question({
+      question: req.body.question,
+      answer: []
+   });
+   qstn.save((err, result, count) => {
+      if(err) {
+         return res.send(500, {error: 'error, could not create question'});
+      }
+      else {
+         res.json(result);
+      }
+   });
+
 });
 
 app.post('/questions/:id/answers/', (req, res) => {

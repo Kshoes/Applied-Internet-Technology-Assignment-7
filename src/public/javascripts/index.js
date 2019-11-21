@@ -92,6 +92,46 @@ function hideModal() {
     }
 }
 
+function submitQuestion() {
+    const question = document.getElementById('question-text').value;
+    const req = new XMLHttpRequest();
+    req.open('POST', '/questions/', true);
+    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    req.send('question=' + question);
+
+    req.addEventListener('load', function() {
+
+        const qABlock = document.getElementById('content').appendChild(document.createElement('article'));  // question/answer block
+        qABlock.className = "qABlock";
+        const qDiv = qABlock.appendChild(document.createElement('h3')); // question
+        qDiv.textContent = question;
+
+        const addAnswerBtn = qABlock.appendChild(document.createElement('input'));
+        addAnswerBtn.className = "addAnswerBtn";
+        addAnswerBtn.type = "button";
+        addAnswerBtn.value = "Add an Answer";
+        
+        const answerBtns = document.getElementsByClassName("addAnswerBtn");
+        for(const a of answerBtns) {
+            a.addEventListener('click', showAnswerModal);
+        }
+
+        hideModal();
+        console.log(req.status, req.responseText);
+    });
+    req.addEventListener('error', function() {
+        console.log('error adding new question');
+    })
+
+}
+
+// function addQABlock(question) {
+//     const qABlock = document.getElementById('content').appendChild(document.createElement('article'));  // question/answer block
+//     qABlock.className = "qABlock";
+//     const qDiv = qABlock.appendChild(document.createElement('h3')); // question
+//     qDiv.textContent = question;
+// }
+
 function main() {
 
     getQuestions();
@@ -108,6 +148,9 @@ function main() {
     for(const c of cancelButtons) {
         c.addEventListener('click', hideModal);
     }
+
+    const createQBtn = document.getElementById("create-question");
+    createQBtn.addEventListener('click', submitQuestion);
 }
 
 document.addEventListener("DOMContentLoaded", main);
