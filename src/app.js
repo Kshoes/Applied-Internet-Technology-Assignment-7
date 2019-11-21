@@ -20,7 +20,7 @@ app.post('/questions/', (req, res) => {
    });
    qstn.save((err, result, count) => {
       if(err) {
-         return res.send(500, {error: 'error, could not create question'});
+         return res.send(500, {error: 'database error: could not create question'});
       }
       else {
          res.json(result);
@@ -35,7 +35,14 @@ app.post('/questions/:id/answers/', (req, res) => {
    Post.findByIdAndUpdate(req.params.id, { "$push": { answers: req.body.answer } }, { "new": true }, (err, docs) => {
      // send back JSON (for example, updated objects... or simply a message saying that this succeeded)
      // ...if error, send back an error message ... optionally, set status to 500
+     if(err) {
+        return res.send(500, {error: 'database error: could not create answer'});
+     }
+     else {
+        res.json(docs);
+     }
    });
+
 });
 
 app.get('/questions/', (req, res) => {
@@ -44,13 +51,14 @@ app.get('/questions/', (req, res) => {
    Post.find({}, function(err, questions, count) {
       res.json(questions.map(function(ele) {
          return {
+            '_id': ele._id,
             'question': ele.question,
             'answers': ele.answers
          }; 
       }));
     });
-})
+});
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {console.log(`Server is listening on ${port}`)});
+app.listen(port, () => {console.log(`Server is listening on ${port}`);});

@@ -11,7 +11,11 @@
   "dependencies": {
     "ajax-fetch": "0.0.4",
     "body-parser": "^1.19.0",
+    "chai": "^4.2.0",
+    "eslint": "^6.6.0",
+    "eslint-plugin-mocha": "^6.2.1",
     "express": "^4.17.1",
+    "mocha": "^6.2.2",
     "mongo": "^0.1.0",
     "mongod": "^2.0.0",
     "mongodb": "^3.3.4",
