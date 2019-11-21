@@ -27,6 +27,14 @@ app.post('/questions/:id/answers/', (req, res) => {
 app.get('/questions/', (req, res) => {
    // TODO
    // Retrieve all questions and send back as JSON
+   Post.find({}, function(err, questions, count) {
+      res.json(questions.map(function(ele) {
+         return {
+            'question': ele.question,
+            'answers': ele.answers
+         }; 
+      }));
+    });
 })
 
 const port = process.env.PORT || 3000;
